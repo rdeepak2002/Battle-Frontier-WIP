@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/rdeepak2002/Battle-Frontier/issues"
   },
-  "homepage": "https://github.com/rdeepak2002/Battle-Frontier#readme"
+  "homepage": "https://github.com/rdeepak2002/Battle-Frontier#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
