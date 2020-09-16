@@ -21,7 +21,11 @@ class App extends Component {
     window.addEventListener("resize", this.resize());
 
     this.resize();
-
+    
+    // put all this in a rendering method and use this scaling library to scale new objects nicely
+    // put all this in a rendering method and use this scaling library to scale new objects nicely
+    // put all this in a rendering method and use this scaling library to scale new objects nicely
+    // put all this in a rendering method and use this scaling library to scale new objects nicely
     let image = {
       x: 0,
       y: 0,
@@ -44,6 +48,11 @@ class App extends Component {
     graphics.lineStyle(5, 0xFF0000);
     graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
     app.stage.addChild(graphics);
+    // put all this in a rendering method and use this scaling library to scale new objects nicely
+    // put all this in a rendering method and use this scaling library to scale new objects nicely
+    // put all this in a rendering method and use this scaling library to scale new objects nicely
+    // put all this in a rendering method and use this scaling library to scale new objects nicely
+
   }
 
   render() {
