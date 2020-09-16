@@ -21,7 +21,7 @@ class App extends Component {
     window.addEventListener("resize", this.resize());
 
     this.resize();
-    
+
     // put all this in a rendering method and use this scaling library to scale new objects nicely
     // put all this in a rendering method and use this scaling library to scale new objects nicely
     // put all this in a rendering method and use this scaling library to scale new objects nicely
