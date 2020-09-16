@@ -8,9 +8,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      app: new PIXI.Application(),
-      width: 1280,
-      height: 720
+      app: new PIXI.Application()
     };
   }
 
@@ -55,16 +53,7 @@ class App extends Component {
     const w = window.innerWidth;
     const h = window.innerHeight;
 
-    let width = this.state.width;
-    let height = this.state.height;
-
-    // this.state.app.stage.scale.x = w / width;
-    // this.state.app.stage.scale.y = h / height;
-
     this.state.app.renderer.resize(w, h);
-
-    width = w;
-    height = h;
   }
 }
 
