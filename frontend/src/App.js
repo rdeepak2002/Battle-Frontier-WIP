@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import {POLICY, Size, getScaledRect} from 'adaptive-scale/lib-esm';
 import * as PIXI from 'pixi.js'
 import './App.css';
-import bunnySprite from './bunny.png';
 
 class App extends Component {
   constructor(props) {
@@ -13,34 +13,37 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const app = this.state.app;
-    const loader = app.loader;
+    let app = this.state.app;
+    let loader = app.loader;
+    let graphics = new PIXI.Graphics();
 
     document.getElementsByClassName("screen")[0].appendChild(app.view);
-
     window.addEventListener("resize", this.resize());
+
     this.resize();
 
-    // create classes / plan to cleanly render game objects
-    // IMPORTANT: create a fixed width and height, and when drawing objects conver their positinos to these aspect ratios
-    loader.add('bunny', bunnySprite).load((loader, resources) => {
-      const bunny = new PIXI.Sprite(resources.bunny.texture);
+    let image = {
+      x: 0,
+      y: 0,
+      width: 1280,
+      height: 720,
+    };
 
-      bunny.width = 100;
-      bunny.height = 150;
+    let originalWidth = image.width;
+    let originalHeight = image.height;
 
-      bunny.x = app.renderer.width / 2;
-      bunny.y = app.renderer.height / 2;
+    let options = {
+      container: new Size(app.renderer.width, app.renderer.height),
+      target: new Size(originalWidth, originalHeight),
+      policy: POLICY.ShowAll, // null | ExactFit | NoBorder | FullHeight | FullWidth | ShowAll
+    };
 
-      bunny.anchor.x = 0.5;
-      bunny.anchor.y = 0.5;
+    let rect = getScaledRect(options);
 
-      app.stage.addChild(bunny);
-
-      app.ticker.add(() => {
-        bunny.rotation += 0.01;
-      });
-    });
+    graphics.beginFill(0xFFFF00);
+    graphics.lineStyle(5, 0xFF0000);
+    graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
+    app.stage.addChild(graphics);
   }
 
   render() {
@@ -50,10 +53,7 @@ class App extends Component {
   }
 
   resize() {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-
-    this.state.app.renderer.resize(w, h);
+    this.state.app.renderer.resize(window.innerWidth, window.innerHeight);
   }
 }
 
