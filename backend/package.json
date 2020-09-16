@@ -1,0 +1,27 @@
+{
+  "name": "battlefrontier",
+  "version": "1.0.0",
+  "description": "Online multiplayer game.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "cd ../frontend/ && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rdeepak2002/Battle-Frontier.git"
+  },
+  "keywords": [
+    "battle",
+    "multiplayer",
+    "mmbn",
+    "game"
+  ],
+  "author": "Deepak Ramalingam",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/rdeepak2002/Battle-Frontier/issues"
+  },
+  "homepage": "https://github.com/rdeepak2002/Battle-Frontier#readme"
+}
