@@ -21,6 +21,7 @@ class App extends Component {
     this.resize = this.resize.bind(this);
     this.render_canvas = this.render_canvas.bind(this);
     this.draw_graphics = this.draw_graphics.bind(this);
+    this.draw_sprites = this.draw_sprites.bind(this);
     // set the state variables
     this.state = {
       aspect_ratio: {"x": 1280, "y": 720},
@@ -28,7 +29,7 @@ class App extends Component {
       loader: undefined,
       graphics: undefined,
       game_area: undefined,
-      sprites: [{"added": false, "name": "ninja", "x": 0, "y": 0, "width": 407, "height": 512, "sprite_image": ninja_sprite, "pixi_sprite_object": undefined}]
+      sprites: [{"added": false, "name": "ninja", "x": 0, "y": 0, "width": 407, "height": 512, "scale": 0.5, "sprite_image": ninja_sprite, "pixi_sprite_object": undefined}]
     };
   }
 
@@ -87,7 +88,7 @@ class App extends Component {
    */
   render_canvas() {
     // get the app, its loader, and pixi graphics from the state
-    const { aspect_ratio, app, graphics, sprites } = this.state;
+    const { aspect_ratio, app, graphics } = this.state;
     // create the playable game area with constant scaling
     const game_area = getScaledRect({
       container: new Size(app.renderer.width, app.renderer.height),
@@ -99,19 +100,10 @@ class App extends Component {
     // make the new game_area definition available to the whole class
     this.setState({game_area: game_area},
     () => {
-      // add sprites that need to be added
-      for(let i = 0; i < sprites.length; i++) {
-        if(!sprites[i].added) {
-          console.log("adding sprite");
-          this.add_sprite(sprites[i]);
-          sprites[i].added = true;
-        }
-        else {
-          this.update_sprite(sprites[i]);
-        }
-      }
       // draw any PIXI specific graphics
       this.draw_graphics();
+      // update and add new sprites
+      this.draw_sprites();
       // add the graphics to the app screen
       app.stage.addChild(graphics);
     });
@@ -129,6 +121,24 @@ class App extends Component {
     graphics.lineStyle(5, 0xFF0000);
     graphics.drawRect(game_area.x, game_area.y,
       game_area.width, game_area.height);
+  }
+
+  /**
+   * function to draw new sprites or update existing ones
+   */
+  draw_sprites() {
+    // get the array of sprite objects
+    const { sprites } = this.state;
+    // loop through sprites and add / update them accordingly
+    for(let i = 0; i < sprites.length; i++) {
+      if(!sprites[i].added) {
+        this.add_sprite(sprites[i]);
+        sprites[i].added = true;
+      }
+      else {
+        this.update_sprite(sprites[i]);
+      }
+    }
   }
 
   /**
@@ -161,8 +171,8 @@ class App extends Component {
     }
     pixi_sprite_object.x = sprite.x + game_area.x;
     pixi_sprite_object.y = sprite.y + game_area.y;
-    pixi_sprite_object.width = sprite.width * game_area.scale;
-    pixi_sprite_object.height = sprite.height * game_area.scale;
+    pixi_sprite_object.width = sprite.width * game_area.scale * sprite.scale;
+    pixi_sprite_object.height = sprite.height * game_area.scale * sprite.scale;
   }
 }
 
