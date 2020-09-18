@@ -1,18 +1,18 @@
 # Battle-Frontier
 ## Author
 Deepak Ramalingam
-## Building
+## Building Server + WebApp
 ```sh
 npm install
 ```
-## Running in Development
+## Running Server + WebApp in Development
 ```sh
-npm run start --prefix frontend
+npm run start --prefix WebApp
 ```
 ```sh
-npm run start --prefix backend
+npm run start --prefix Server
 ```
-## Running in Production
+## Running Server + WebApp in Production
 ```sh
-npm run start --prefix backend
+npm run start --prefix Server
 ```
