@@ -28,11 +28,10 @@ class App extends Component {
     this.render_canvas = this.render_canvas.bind(this);
     // set the state variables
     this.state = {
-      debug: true,
+      debug: false,
       aspect_ratio: {"x": 1280, "y": 720},
       app: undefined,
       loader: undefined,
-      graphics: undefined,
       game_area: undefined,
       sprites: [new Sprite({"name": "ninja", "x": 0, "y": 0, "width": 407,
         "height": 512, "scale": 0.5, "sprite_image": ninja_sprite,
@@ -49,12 +48,10 @@ class App extends Component {
     // declare and initialize the PIXI canvas
     const app = new PIXI.Application();
     const loader = app.loader;
-    const graphics = new PIXI.Graphics();
     // initialize the state variables
     this.setState({
       app: app,
-      loader: loader,
-      graphics: graphics
+      loader: loader
     },
     () => {
       // add the screen to the page and add a resize listener to fit screen
@@ -106,7 +103,7 @@ class App extends Component {
    */
   render_canvas() {
     // get the app, its loader, and pixi graphics from the state
-    const { aspect_ratio, app, graphics, GraphicsManager,
+    const { aspect_ratio, app, GraphicsManager,
       SpriteManager } = this.state;
     // create the playable game area with constant scaling
     const game_area = getScaledRect({
@@ -123,8 +120,6 @@ class App extends Component {
       GraphicsManager.draw_graphics(this.state);
       // update and add new sprites
       SpriteManager.draw_sprites(this.state);
-      // add the graphics to the app screen
-      app.stage.addChild(graphics);
     });
   }
 }
