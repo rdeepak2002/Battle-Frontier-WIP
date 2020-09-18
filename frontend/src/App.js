@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import {POLICY, Size, getScaledRect} from 'adaptive-scale/lib-esm';
+import { POLICY, Size, getScaledRect } from 'adaptive-scale/lib-esm';
 import * as PIXI from 'pixi.js';
 import './App.css';
+
+import Sprite from './classes/sprites/Sprite';
+import SpriteManager from './classes/sprites/SpriteManager';
+
+import GraphicsManager from './classes/graphics/GraphicsManager';
 
 import ninja_sprite from './resources/sprites/ninja.png';
 
@@ -20,8 +25,6 @@ class App extends Component {
     // bind methods to use the state
     this.resize = this.resize.bind(this);
     this.render_canvas = this.render_canvas.bind(this);
-    this.draw_graphics = this.draw_graphics.bind(this);
-    this.draw_sprites = this.draw_sprites.bind(this);
     // set the state variables
     this.state = {
       aspect_ratio: {"x": 1280, "y": 720},
@@ -29,7 +32,11 @@ class App extends Component {
       loader: undefined,
       graphics: undefined,
       game_area: undefined,
-      sprites: [{"added": false, "name": "ninja", "x": 0, "y": 0, "width": 407, "height": 512, "scale": 0.5, "sprite_image": ninja_sprite, "pixi_sprite_object": undefined}]
+      sprites: [new Sprite({"name": "ninja", "x": 0, "y": 0, "width": 407,
+        "height": 512, "scale": 0.5, "sprite_image": ninja_sprite,
+        "pixi_sprite_object": undefined, "added": false})],
+      GraphicsManager: new GraphicsManager(),
+      SpriteManager: new SpriteManager()
     };
   }
 
@@ -88,7 +95,8 @@ class App extends Component {
    */
   render_canvas() {
     // get the app, its loader, and pixi graphics from the state
-    const { aspect_ratio, app, graphics } = this.state;
+    const { aspect_ratio, app, graphics, GraphicsManager,
+      SpriteManager } = this.state;
     // create the playable game area with constant scaling
     const game_area = getScaledRect({
       container: new Size(app.renderer.width, app.renderer.height),
@@ -101,78 +109,12 @@ class App extends Component {
     this.setState({game_area: game_area},
     () => {
       // draw any PIXI specific graphics
-      this.draw_graphics();
+      GraphicsManager.draw_graphics(this.state);
       // update and add new sprites
-      this.draw_sprites();
+      SpriteManager.draw_sprites(this.state);
       // add the graphics to the app screen
       app.stage.addChild(graphics);
     });
-  }
-
-  /**
-   * function to render PIXI-specific graphics
-   */
-  draw_graphics() {
-    // get an instance of the game_area
-    const { graphics, game_area } = this.state;
-    // clear the previous graphics
-    graphics.clear();
-    // draw the game area background for debugging
-    graphics.lineStyle(5, 0xFF0000);
-    graphics.drawRect(game_area.x, game_area.y,
-      game_area.width, game_area.height);
-  }
-
-  /**
-   * function to draw new sprites or update existing ones
-   */
-  draw_sprites() {
-    // get the array of sprite objects
-    const { sprites } = this.state;
-    // loop through sprites and add / update them accordingly
-    for(let i = 0; i < sprites.length; i++) {
-      if(!sprites[i].added) {
-        this.add_sprite(sprites[i]);
-        sprites[i].added = true;
-      }
-      else {
-        this.update_sprite(sprites[i]);
-      }
-    }
-  }
-
-  /**
-   * function to add a new sprite to PIXI canvas
-   */
-  add_sprite(sprite_to_add) {
-    // get an instance of the app and loader
-    const { app, loader, game_area } = this.state;
-    // load the texture we need
-    loader.add(sprite_to_add.name, sprite_to_add.sprite_image).load((loader, resources) => {
-      const sprite = new PIXI.Sprite(resources[sprite_to_add.name].texture);
-      sprite.x = sprite_to_add.x + game_area.x;
-      sprite.y = sprite_to_add.y + game_area.y;
-      sprite.width = sprite_to_add.width * game_area.scale;
-      sprite.height = sprite_to_add.height * game_area.scale;
-      sprite_to_add.pixi_sprite_object = sprite;
-      app.stage.addChild(sprite);
-    });
-  }
-
-  /**
-   * function to update an existing sprite
-   */
-  update_sprite(sprite) {
-    // get an instance of the app and loader
-    const { game_area } = this.state;
-    const pixi_sprite_object = sprite.pixi_sprite_object;
-    if(!pixi_sprite_object) {
-      return;
-    }
-    pixi_sprite_object.x = sprite.x + game_area.x;
-    pixi_sprite_object.y = sprite.y + game_area.y;
-    pixi_sprite_object.width = sprite.width * game_area.scale * sprite.scale;
-    pixi_sprite_object.height = sprite.height * game_area.scale * sprite.scale;
   }
 }
 
