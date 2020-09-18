@@ -3,6 +3,9 @@
  * @author Deepak Ramalingam
  */
 class Sprite {
+  /**
+   * Constructor to initialize variables
+   */
   constructor(props) {
     this.name = props.name;
     this.x = props.x;

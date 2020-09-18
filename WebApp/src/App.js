@@ -24,9 +24,11 @@ class App extends Component {
     super(props);
     // bind methods to use the state
     this.resize = this.resize.bind(this);
+    this.debug = this.debug.bind(this);
     this.render_canvas = this.render_canvas.bind(this);
     // set the state variables
     this.state = {
+      debug: true,
       aspect_ratio: {"x": 1280, "y": 720},
       app: undefined,
       loader: undefined,
@@ -62,6 +64,7 @@ class App extends Component {
       this.resize();
       // render the canvas in a loop
       app.ticker.add((delta) => {
+        this.debug();
         this.render_canvas();
       });
     });
@@ -88,6 +91,14 @@ class App extends Component {
   resize() {
     this.state.app.renderer.resize(window.innerWidth, window.innerHeight);
     this.render_canvas();
+  }
+
+  /**
+   * function for handle debugging
+   */
+  debug() {
+    const { debug, GraphicsManager } = this.state;
+    GraphicsManager.debug = debug;
   }
 
   /**
