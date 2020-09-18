@@ -161,7 +161,6 @@
 				2ED5ED48C4AE0BEE3E680333 /* Pods-MobileApp-tvOSTests.debug.xcconfig */,
 				7F09319925607B96A728603C /* Pods-MobileApp-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

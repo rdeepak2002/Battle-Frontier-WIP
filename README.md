@@ -16,3 +16,15 @@ npm run start --prefix Server
 ```sh
 npm run start --prefix Server
 ```
+## Running on iOS
+```sh
+cd MobileApp
+npm install
+npx react-native run-ios
+```
+## Running on Android
+```sh
+cd MobileApp
+npm install
+npx react-native run-android
+```
