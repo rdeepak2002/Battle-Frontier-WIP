@@ -28,7 +28,7 @@ class App extends Component {
     this.render_canvas = this.render_canvas.bind(this);
     // set the state variables
     this.state = {
-      debug: false,
+      debug: true,
       aspect_ratio: {"x": 1280, "y": 720},
       app: undefined,
       loader: undefined,
