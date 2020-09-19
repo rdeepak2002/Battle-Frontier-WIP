@@ -21,6 +21,7 @@ class NetworkManager {
    */
   add_ping_listener() {
     this.socket.on('pong', function(ms) {
+      console.log(ms);
       this.latency = ms;
     });
   }
