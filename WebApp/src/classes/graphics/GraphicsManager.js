@@ -33,7 +33,7 @@ class GraphicsManager {
    */
   draw_text(props) {
     // get an instance of the app an game area
-    const { app } = props;
+    const { app, NetworkManager } = props;
     // go through all text objects and draw them
     for(let i = 0; i < this.text_objects.length; i++) {
       const text_object = this.text_objects[i];
@@ -55,7 +55,7 @@ class GraphicsManager {
       if(text_object.name === "ping_text") {
         if(this.debug) {
           // set ping text
-          text_object.text_object.text = "Ping: " + NetworkManager.get_latency()
+          text_object.text_object.text = "Ping: " + NetworkManager.latency
             + " MS";
           // move the text
           text_object.text_object.y = 32;
