@@ -101,7 +101,6 @@ class App extends Component {
    * function to handle a click or tap on the screen
    */
   click_listener() {
-    alert("starting music");
     const { MusicManager } = this.state;
     MusicManager.play_music("battle1_intro", false, false);
   }
