@@ -63,6 +63,7 @@ class App extends Component {
       window.addEventListener("resize", this.resize);
       // click listener for audio elements to work fine
       window.addEventListener("mousedown", this.click_listener, false);
+      window.addEventListener("touchstart", this.click_listener, false);
       // resize to fit screen once in beginning
       this.resize();
       // render the canvas in a loop

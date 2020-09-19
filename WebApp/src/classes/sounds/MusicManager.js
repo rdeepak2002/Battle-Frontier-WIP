@@ -1,7 +1,8 @@
 import * as PIXISound from 'pixi-sound';
 
-import battle1_intro from "./../../resources/music/battle1_intro.mp3";
-import battle1_loop from "./../../resources/music/battle1_loop.mp3";
+import prologue from "./../../resources/music/prologue.mp3";
+import battle1_intro from "./../../resources/music/battle1/battle1_intro.mp3";
+import battle1_loop from "./../../resources/music/battle1/battle1_loop.mp3";
 
 /**
  * Class for managing Music
