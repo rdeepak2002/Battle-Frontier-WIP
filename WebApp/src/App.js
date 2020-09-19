@@ -8,6 +8,8 @@ import SpriteManager from './classes/sprites/SpriteManager';
 
 import GraphicsManager from './classes/graphics/GraphicsManager';
 
+import MusicManager from './classes/sounds/MusicManager';
+
 import ninja_sprite from './resources/sprites/ninja.png';
 
 /**
@@ -24,20 +26,22 @@ class App extends Component {
     super(props);
     // bind methods to use the state
     this.resize = this.resize.bind(this);
+    this.click_listener = this.click_listener.bind(this);
     this.debug = this.debug.bind(this);
     this.render_canvas = this.render_canvas.bind(this);
     // set the state variables
     this.state = {
       debug: true,
-      aspect_ratio: {"x": 1280, "y": 720},
+      aspect_ratio: {"x": 768, "y": 432},
       app: undefined,
       loader: undefined,
       game_area: undefined,
       sprites: [new Sprite({"name": "ninja", "x": 0, "y": 0, "width": 407,
-        "height": 512, "scale": 0.5, "sprite_image": ninja_sprite,
+        "height": 512, "scale": 0.3, "sprite_image": ninja_sprite,
         "pixi_sprite_object": undefined, "added": false})],
       GraphicsManager: new GraphicsManager(),
-      SpriteManager: new SpriteManager()
+      SpriteManager: new SpriteManager(),
+      MusicManager: new MusicManager()
     };
   }
 
@@ -57,6 +61,8 @@ class App extends Component {
       // add the screen to the page and add a resize listener to fit screen
       document.getElementsByClassName("screen")[0].appendChild(app.view);
       window.addEventListener("resize", this.resize);
+      // click listener for audio elements to work fine
+      window.addEventListener("mousedown", this.click_listener, false);
       // resize to fit screen once in beginning
       this.resize();
       // render the canvas in a loop
@@ -88,6 +94,14 @@ class App extends Component {
   resize() {
     this.state.app.renderer.resize(window.innerWidth, window.innerHeight);
     this.render_canvas();
+  }
+
+  /**
+   * function to handle a click or tap on the screen
+   */
+  click_listener() {
+    const { MusicManager } = this.state;
+    MusicManager.play_music("battle1_intro", false, false);
   }
 
   /**
