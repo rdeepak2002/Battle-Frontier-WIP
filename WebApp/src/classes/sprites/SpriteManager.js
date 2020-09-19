@@ -1,24 +1,35 @@
 import * as PIXI from 'pixi.js';
 
+import Sprite from './../sprites/Sprite';
+
+import ninja_sprite from './../../resources/sprites/ninja.png';
+
 /**
  * Class for managing Sprite objects
  * @author Deepak Ramalingam
  */
 class SpriteManager {
   /**
+   * Constructor to initialize variables
+   */
+  constructor() {
+    this.sprites = [new Sprite({"name": "ninja", "x": 0, "y": 0, "width": 407,
+      "height": 512, "scale": 0.3, "sprite_image": ninja_sprite,
+      "pixi_sprite_object": undefined, "added": false})]
+  }
+
+  /**
    * function to draw new sprites or update existing ones
    */
   draw_sprites(props) {
-    // get the array of sprite objects
-    const { sprites } = props;
     // loop through sprites and add / update them accordingly
-    for(let i = 0; i < sprites.length; i++) {
-      if(!sprites[i].added) {
-        this.add_sprite(sprites[i], props);
-        sprites[i].added = true;
+    for(let i = 0; i < this.sprites.length; i++) {
+      if(!this.sprites[i].added) {
+        this.add_sprite(this.sprites[i], props);
+        this.sprites[i].added = true;
       }
       else {
-        this.update_sprite(sprites[i], props);
+        this.update_sprite(this.sprites[i], props);
       }
     }
   }

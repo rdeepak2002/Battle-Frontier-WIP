@@ -3,14 +3,10 @@ import { POLICY, Size, getScaledRect } from 'adaptive-scale/lib-esm';
 import * as PIXI from 'pixi.js';
 import './App.css';
 
-import Sprite from './classes/sprites/Sprite';
 import SpriteManager from './classes/sprites/SpriteManager';
-
 import GraphicsManager from './classes/graphics/GraphicsManager';
-
 import MusicManager from './classes/sounds/MusicManager';
-
-import ninja_sprite from './resources/sprites/ninja.png';
+import NetworkManager from './classes/network/NetworkManager';
 
 /**
  * Main class that render the Canvas and handles scaling and resizing
@@ -36,12 +32,10 @@ class App extends Component {
       app: undefined,
       loader: undefined,
       game_area: undefined,
-      sprites: [new Sprite({"name": "ninja", "x": 0, "y": 0, "width": 407,
-        "height": 512, "scale": 0.3, "sprite_image": ninja_sprite,
-        "pixi_sprite_object": undefined, "added": false})],
       GraphicsManager: new GraphicsManager(),
       SpriteManager: new SpriteManager(),
-      MusicManager: new MusicManager()
+      MusicManager: new MusicManager(),
+      NetworkManager: new NetworkManager()
     };
   }
 
@@ -98,7 +92,7 @@ class App extends Component {
   }
 
   /**
-   * function to handle a click or tap on the screen
+   * function to handle a click or tap on the screen to play beginning music
    */
   click_listener() {
     const { MusicManager } = this.state;

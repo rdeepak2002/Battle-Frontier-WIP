@@ -16,6 +16,7 @@ class MusicManager {
     // variables to keep track of what song is playing and the files
     this.now_playing = undefined;
     this.files = {
+      "prologue": {"file": prologue},
       "battle1_intro" : {"file": battle1_intro, "loop_song": "battle1_loop"},
       "battle1_loop": {"file": battle1_loop}
     };
