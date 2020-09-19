@@ -33,7 +33,7 @@ class GraphicsManager {
    */
   draw_text(props) {
     // get an instance of the app an game area
-    const { app, NetworkManager } = props;
+    const { app } = props;
     // go through all text objects and draw them
     for(let i = 0; i < this.text_objects.length; i++) {
       const text_object = this.text_objects[i];

@@ -13,13 +13,6 @@ class NetworkManager {
     this.socket = io(this.server_url);
     this.latency = 0;
 
-    this.add_ping_listener();
-  }
-
-  /**
-   * function to listen for pings from server
-   */
-  add_ping_listener() {
     this.socket.on('pong', function(ms) {
       console.log(ms);
       this.latency = ms;
