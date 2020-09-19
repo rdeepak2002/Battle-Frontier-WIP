@@ -12,7 +12,10 @@ class GraphicsManager {
     this.debug = false;
     this.text_objects = [{"name": "fps_text", "added": false, "text_object":
       new PIXI.Text("", {fontFamily : "Arial", fontSize: 24, fill : 0xFFFFFF,
-      align : "center"})}];
+      align : "center"})},
+      {"name": "ping_text", "added": false, "text_object":
+        new PIXI.Text("", {fontFamily : "Arial", fontSize: 24, fill : 0xFFFFFF,
+        align : "center"})}];
     this.sprite_objects = [{"name": "game_area_rect", "sprite":
       PIXI.Sprite.from(PIXI.Texture.WHITE)}];
   }
@@ -30,7 +33,7 @@ class GraphicsManager {
    */
   draw_text(props) {
     // get an instance of the app an game area
-    const { app } = props;
+    const { app, NetworkManager } = props;
     // go through all text objects and draw them
     for(let i = 0; i < this.text_objects.length; i++) {
       const text_object = this.text_objects[i];
@@ -39,6 +42,23 @@ class GraphicsManager {
         if(this.debug) {
           // set fps text
           text_object.text_object.text = app.ticker.FPS.toFixed(1) + " FPS";
+          // add a text object to the canvas if it has not been addedd
+          if(!text_object.added) {
+            app.stage.addChild(text_object.text_object);
+            text_object.added = true;
+          }
+        }
+        else {
+          app.stage.removeChild(text_object.text_object);
+        }
+      }
+      if(text_object.name === "ping_text") {
+        if(this.debug) {
+          // set ping text
+          text_object.text_object.text = "Ping: " + NetworkManager.get_latency()
+            + " MS";
+          // move the text
+          text_object.text_object.y = 32;
           // add a text object to the canvas if it has not been addedd
           if(!text_object.added) {
             app.stage.addChild(text_object.text_object);

@@ -32,10 +32,10 @@ class App extends Component {
       app: undefined,
       loader: undefined,
       game_area: undefined,
-      GraphicsManager: new GraphicsManager(),
-      SpriteManager: new SpriteManager(),
-      MusicManager: new MusicManager(),
-      NetworkManager: new NetworkManager()
+      GraphicsManager: undefined,
+      SpriteManager: undefined,
+      MusicManager: undefined,
+      NetworkManager: undefined
     };
   }
 
@@ -49,7 +49,11 @@ class App extends Component {
     // initialize the state variables
     this.setState({
       app: app,
-      loader: loader
+      loader: loader,
+      GraphicsManager: new GraphicsManager(),
+      SpriteManager: new SpriteManager(),
+      MusicManager: new MusicManager(),
+      NetworkManager: new NetworkManager()
     },
     () => {
       // add the screen to the page and add a resize listener to fit screen
@@ -96,7 +100,7 @@ class App extends Component {
    */
   click_listener() {
     const { MusicManager } = this.state;
-    MusicManager.play_music("battle1_intro", false, false);
+    MusicManager.play_music("prologue", true, false);
   }
 
   /**
