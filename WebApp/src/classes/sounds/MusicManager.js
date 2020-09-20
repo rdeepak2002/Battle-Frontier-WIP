@@ -13,8 +13,9 @@ class MusicManager {
    * Constructor to initialize variables
    */
   constructor() {
-    // variables to keep track of what song is playing and the files
+    // variables to keep track of the song currently playing
     this.now_playing = undefined;
+    // variable to keep track of the music files
     this.files = {
       "prologue": {"file": prologue},
       "battle1_intro" : {"file": battle1_intro, "loop_song": "battle1_loop"},

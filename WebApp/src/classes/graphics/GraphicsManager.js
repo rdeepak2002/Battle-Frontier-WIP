@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js';
 
+import { isMobile } from 'react-device-detect';
+
 /**
  * Class for managing Graphics
  * @author Deepak Ramalingam
@@ -10,96 +12,150 @@ class GraphicsManager {
    */
   constructor() {
     this.debug = false;
-    this.text_objects = [{"name": "fps_text", "added": false, "text_object":
-      new PIXI.Text("", {fontFamily : "Arial", fontSize: 24, fill : 0xFFFFFF,
-      align : "center"})},
+    this.text_objects = [
+      // start text
+      {"name": "start_text", "added": false, "text_object":
+        new PIXI.Text(isMobile ? "Tap to Start" : "Click to Start", {fontFamily : "Arial", fontSize: 24,
+        fill : 0xFFFFFF, align : "center"})},
+      // fps text
+      {"name": "fps_text", "added": false, "text_object":
+        new PIXI.Text("", {fontFamily : "Arial", fontSize: 24, fill : 0xFFFFFF,
+        align : "center"})},
+      // ping time text
       {"name": "ping_text", "added": false, "text_object":
         new PIXI.Text("", {fontFamily : "Arial", fontSize: 24, fill : 0xFFFFFF,
-        align : "center"})}];
-    this.sprite_objects = [{"name": "game_area_rect", "sprite":
-      PIXI.Sprite.from(PIXI.Texture.WHITE)}];
+        align : "center"})}
+      ];
+    this.sprite_objects = [
+      // game_area rectangle
+      {"name": "game_area_rect", "sprite": PIXI.Sprite.from(PIXI.Texture.WHITE)}
+      ];
   }
 
   /**
    * function to render PIXI-specific graphics
    */
   draw_graphics(props) {
+    this.debug = props.debug;
     this.draw_sprites(props);
     this.draw_text(props);
-  }
-
-  /**
-   * function to draw text
-   */
-  draw_text(props) {
-    // get an instance of the app an game area
-    const { app, NetworkManager } = props;
-    // go through all text objects and draw them
-    for(let i = 0; i < this.text_objects.length; i++) {
-      const text_object = this.text_objects[i];
-      // for the fps text set it according to app.ticker.FPS
-      if(text_object.name === "fps_text") {
-        if(this.debug) {
-          // set fps text
-          text_object.text_object.text = app.ticker.FPS.toFixed(1) + " FPS";
-          // add a text object to the canvas if it has not been addedd
-          if(!text_object.added) {
-            app.stage.addChild(text_object.text_object);
-            text_object.added = true;
-          }
-        }
-        else {
-          app.stage.removeChild(text_object.text_object);
-        }
-      }
-      if(text_object.name === "ping_text") {
-        if(this.debug) {
-          // set ping text
-          text_object.text_object.text = "Ping: " + NetworkManager.latency
-            + " MS";
-          // move the text
-          text_object.text_object.y = 32;
-          // add a text object to the canvas if it has not been addedd
-          if(!text_object.added) {
-            app.stage.addChild(text_object.text_object);
-            text_object.added = true;
-          }
-        }
-        else {
-          app.stage.removeChild(text_object.text_object);
-        }
-      }
-    }
   }
 
   /**
    * function to draw sprites
    */
   draw_sprites(props) {
-    // get an instance of the app an game area
-    const { app, game_area } = props;
     // go through all sprite objects and draw them
     for(let i = 0; i < this.sprite_objects.length; i++) {
       const sprite_object = this.sprite_objects[i];
-      // for the game area rectangle, draw it at the game_area bounds
       if(sprite_object.name === "game_area_rect") {
-        if(this.debug) {
-          // define the sprite as the game area
-          sprite_object.sprite.x = game_area.x;
-          sprite_object.sprite.y = game_area.y;
-          sprite_object.sprite.width = game_area.width;
-          sprite_object.sprite.height = game_area.height;
-          sprite_object.sprite.tint = 0xFF0000;
-          // add a sprite object to the canvas if it has not been addedd
-          if(!sprite_object.added) {
-            app.stage.addChild(sprite_object.sprite);
-            sprite_object.added = true;
-          }
-        }
-        else {
-          app.stage.removeChild(sprite_object.sprite);
-        }
+        this.handle_game_area_rect(sprite_object, props);
       }
+    }
+  }
+
+  /**
+   * function to draw text
+   */
+  draw_text(props) {
+    // go through all text objects and draw them
+    for(let i = 0; i < this.text_objects.length; i++) {
+      const text_object = this.text_objects[i];
+      if(text_object.name === "fps_text") {
+        this.handle_fps_text(text_object, props);
+      }
+      if(text_object.name === "ping_text") {
+        this.handle_ping_text(text_object, props);
+      }
+      if(text_object.name === "start_text") {
+        this.handle_start_text(text_object, props);
+      }
+    }
+  }
+
+  handle_game_area_rect(sprite_object, props) {
+    const { app, game_area } = props;
+    if(this.debug) {
+      // define the sprite as the game area
+      sprite_object.sprite.x = game_area.x;
+      sprite_object.sprite.y = game_area.y;
+      sprite_object.sprite.width = game_area.width;
+      sprite_object.sprite.height = game_area.height;
+      sprite_object.sprite.tint = 0xFF0000;
+      // add a sprite object to the canvas if it has not been addedd
+      if(!sprite_object.added) {
+        app.stage.addChild(sprite_object.sprite);
+        sprite_object.added = true;
+      }
+    }
+    else {
+      app.stage.removeChild(sprite_object.sprite);
+    }
+  }
+
+  /**
+   * function to handle drawing the start text
+   */
+  handle_start_text(text_object, props) {
+    const { app, game_area } = props;
+    if(!app.first_click) {
+      // position the text in the center
+      text_object.text_object.x = game_area.x + game_area.width/2
+        - text_object.text_object.width/2;
+      text_object.text_object.y = game_area.y + game_area.height/2
+        - text_object.text_object.height/2;
+      // add a text object to the canvas if it has not been addedd
+      if(!text_object.added) {
+        app.stage.addChild(text_object.text_object);
+        text_object.added = true;
+      }
+      else {
+        text_object.text = "";
+      }
+    }
+    else {
+      app.stage.removeChild(text_object.text_object);
+    }
+  }
+
+  /**
+   * function to handle drawing the fps text
+   */
+  handle_fps_text(text_object, props) {
+    const { app } = props;
+    if(this.debug) {
+      // set fps text
+      text_object.text_object.text = app.ticker.FPS.toFixed(1) + " FPS";
+      // add a text object to the canvas if it has not been addedd
+      if(!text_object.added) {
+        app.stage.addChild(text_object.text_object);
+        text_object.added = true;
+      }
+    }
+    else {
+      app.stage.removeChild(text_object.text_object);
+    }
+  }
+
+  /**
+   * function to handle drawing the ping text
+   */
+  handle_ping_text(text_object, props) {
+    const { app, NetworkManager } = props;
+    if(this.debug) {
+      // set ping text
+      text_object.text_object.text = "Ping: " + NetworkManager.latency
+        + " MS";
+      // move the text
+      text_object.text_object.y = 32;
+      // add a text object to the canvas if it has not been addedd
+      if(!text_object.added) {
+        app.stage.addChild(text_object.text_object);
+        text_object.added = true;
+      }
+    }
+    else {
+      app.stage.removeChild(text_object.text_object);
     }
   }
 }

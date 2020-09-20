@@ -1,9 +1,5 @@
 import * as PIXI from 'pixi.js';
 
-import Sprite from './../sprites/Sprite';
-
-import ninja_sprite from './../../resources/sprites/ninja.png';
-
 /**
  * Class for managing Sprite objects
  * @author Deepak Ramalingam
@@ -13,9 +9,7 @@ class SpriteManager {
    * Constructor to initialize variables
    */
   constructor() {
-    this.sprites = [new Sprite({"name": "ninja", "x": 0, "y": 0, "width": 407,
-      "height": 512, "scale": 0.3, "sprite_image": ninja_sprite,
-      "pixi_sprite_object": undefined, "added": false})]
+    this.sprites = []
   }
 
   /**

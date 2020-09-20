@@ -3,6 +3,7 @@ import { POLICY, Size, getScaledRect } from 'adaptive-scale/lib-esm';
 import * as PIXI from 'pixi.js';
 import './App.css';
 
+import ScreenManager from './classes/screens/ScreenManager';
 import SpriteManager from './classes/sprites/SpriteManager';
 import GraphicsManager from './classes/graphics/GraphicsManager';
 import MusicManager from './classes/sounds/MusicManager';
@@ -23,7 +24,6 @@ class App extends Component {
     // bind methods to use the state
     this.resize = this.resize.bind(this);
     this.click_listener = this.click_listener.bind(this);
-    this.debug = this.debug.bind(this);
     this.render_canvas = this.render_canvas.bind(this);
     // set the state variables
     this.state = {
@@ -32,6 +32,7 @@ class App extends Component {
       app: undefined,
       loader: undefined,
       game_area: undefined,
+      ScreenManager: undefined,
       GraphicsManager: undefined,
       SpriteManager: undefined,
       MusicManager: undefined,
@@ -46,10 +47,12 @@ class App extends Component {
     // declare and initialize the PIXI canvas
     const app = new PIXI.Application();
     const loader = app.loader;
+    app.first_click = false;
     // initialize the state variables
     this.setState({
       app: app,
       loader: loader,
+      ScreenManager: new ScreenManager(),
       GraphicsManager: new GraphicsManager(),
       SpriteManager: new SpriteManager(),
       MusicManager: new MusicManager(),
@@ -66,7 +69,6 @@ class App extends Component {
       this.resize();
       // render the canvas in a loop
       app.ticker.add((delta) => {
-        this.debug();
         this.render_canvas();
       });
     });
@@ -77,6 +79,8 @@ class App extends Component {
    */
   componentWillUnmount() {
     window.removeEventListener("resize", this.resize);
+    window.removeEventListener("mousedown", this.click_listener, false);
+    window.removeEventListener("touchstart", this.click_listener, false);
     window.location.reload();
   }
 
@@ -99,16 +103,11 @@ class App extends Component {
    * function to handle a click or tap on the screen to play beginning music
    */
   click_listener() {
-    const { MusicManager } = this.state;
-    MusicManager.play_music("prologue", true, false);
-  }
-
-  /**
-   * function for handle debugging
-   */
-  debug() {
-    const { debug, GraphicsManager } = this.state;
-    GraphicsManager.debug = debug;
+    if(!this.first_click) {
+      const { app, ScreenManager } = this.state;
+      ScreenManager.load_screen(this.state, "title");
+      app.first_click = true;
+    }
   }
 
   /**
