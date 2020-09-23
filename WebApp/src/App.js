@@ -9,6 +9,9 @@ import GraphicsManager from './classes/graphics/GraphicsManager';
 import MusicManager from './classes/sounds/MusicManager';
 import NetworkManager from './classes/network/NetworkManager';
 
+import sky_background from './resources/sprites/backgrounds/sky_background.png';
+import ninja_image from './resources/sprites/ninja.png';
+
 /**
  * Main class that render the Canvas and handles scaling and resizing
  * @author Deepak Ramalingam
@@ -27,7 +30,7 @@ class App extends Component {
     this.render_canvas = this.render_canvas.bind(this);
     // set the state variables
     this.state = {
-      debug: true,
+      debug: false,
       aspect_ratio: {"x": 768, "y": 432},
       app: undefined,
       loader: undefined,
@@ -48,28 +51,34 @@ class App extends Component {
     const app = new PIXI.Application();
     const loader = app.loader;
     app.first_click = false;
-    // initialize the state variables
-    this.setState({
-      app: app,
-      loader: loader,
-      ScreenManager: new ScreenManager(),
-      GraphicsManager: new GraphicsManager(),
-      SpriteManager: new SpriteManager(),
-      MusicManager: new MusicManager(),
-      NetworkManager: new NetworkManager()
-    },
-    () => {
-      // add the screen to the page and add a resize listener to fit screen
-      document.getElementsByClassName("screen")[0].appendChild(app.view);
-      window.addEventListener("resize", this.resize);
-      // click listener for audio elements to work fine
-      window.addEventListener("mousedown", this.click_listener, false);
-      window.addEventListener("touchstart", this.click_listener, false);
-      // resize to fit screen once in beginning
-      this.resize();
-      // render the canvas in a loop
-      app.ticker.add((delta) => {
-        this.render_canvas();
+    // add textures
+    loader.add('sky_background', sky_background)
+          .add('ninja_image', ninja_image);
+    // load the textures
+    loader.load((loader, resources) => {
+      // initialize the state variables
+      this.setState({
+        app: app,
+        resources: resources,
+        ScreenManager: new ScreenManager(),
+        GraphicsManager: new GraphicsManager(),
+        SpriteManager: new SpriteManager(),
+        MusicManager: new MusicManager(),
+        NetworkManager: new NetworkManager()
+      },
+      () => {
+        // add the screen to the page and add a resize listener to fit screen
+        document.getElementsByClassName("screen")[0].appendChild(app.view);
+        window.addEventListener("resize", this.resize);
+        // click listener for audio elements to work fine
+        window.addEventListener("mousedown", this.click_listener, false);
+        window.addEventListener("touchstart", this.click_listener, false);
+        // resize to fit screen once in beginning
+        this.resize();
+        // render the canvas in a loop
+        app.ticker.add((delta) => {
+          this.render_canvas();
+        });
       });
     });
   }

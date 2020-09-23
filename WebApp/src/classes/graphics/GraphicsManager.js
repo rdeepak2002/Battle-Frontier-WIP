@@ -15,7 +15,8 @@ class GraphicsManager {
     this.text_objects = [
       // start text
       {"name": "start_text", "added": false, "text_object":
-        new PIXI.Text(isMobile ? "Tap to Start" : "Click to Start", {fontFamily : "Arial", fontSize: 24,
+        new PIXI.Text(isMobile ? "Tap to Start" : "Click to Start",
+        {fontFamily : "Arial", fontSize: 24,
         fill : 0xFFFFFF, align : "center"})},
       // fps text
       {"name": "fps_text", "added": false, "text_object":
@@ -34,6 +35,7 @@ class GraphicsManager {
 
   /**
    * function to render PIXI-specific graphics
+   * @param {object} props The properties of the application to be passed down
    */
   draw_graphics(props) {
     this.debug = props.debug;
@@ -43,37 +45,44 @@ class GraphicsManager {
 
   /**
    * function to draw sprites
+   * @param {object} props The properties of the application to be passed down
    */
   draw_sprites(props) {
     // go through all sprite objects and draw them
     for(let i = 0; i < this.sprite_objects.length; i++) {
       const sprite_object = this.sprite_objects[i];
       if(sprite_object.name === "game_area_rect") {
-        this.handle_game_area_rect(sprite_object, props);
+        this.handle_game_area_rect(props, sprite_object);
       }
     }
   }
 
   /**
    * function to draw text
+   * @param {object} props The properties of the application to be passed down
    */
   draw_text(props) {
     // go through all text objects and draw them
     for(let i = 0; i < this.text_objects.length; i++) {
       const text_object = this.text_objects[i];
       if(text_object.name === "fps_text") {
-        this.handle_fps_text(text_object, props);
+        this.handle_fps_text(props, text_object);
       }
       if(text_object.name === "ping_text") {
-        this.handle_ping_text(text_object, props);
+        this.handle_ping_text(props, text_object);
       }
       if(text_object.name === "start_text") {
-        this.handle_start_text(text_object, props);
+        this.handle_start_text(props, text_object);
       }
     }
   }
 
-  handle_game_area_rect(sprite_object, props) {
+  /**
+   * function to draw a red rectangle for the game area
+   * @param {object} props The properties of the application to be passed down
+   * @param {string} sprite_object The sprite object to be utilized
+   */
+  handle_game_area_rect(props, sprite_object) {
     const { app, game_area } = props;
     if(this.debug) {
       // define the sprite as the game area
@@ -95,8 +104,10 @@ class GraphicsManager {
 
   /**
    * function to handle drawing the start text
+   * @param {object} props The properties of the application to be passed down
+   * @param {string} sprite_object The text object to be utilized
    */
-  handle_start_text(text_object, props) {
+  handle_start_text(props, text_object) {
     const { app, game_area } = props;
     if(!app.first_click) {
       // position the text in the center
@@ -120,8 +131,10 @@ class GraphicsManager {
 
   /**
    * function to handle drawing the fps text
+   * @param {object} props The properties of the application to be passed down
+   * @param {string} sprite_object The text object to be utilized
    */
-  handle_fps_text(text_object, props) {
+  handle_fps_text(props, text_object) {
     const { app } = props;
     if(this.debug) {
       // set fps text
@@ -139,8 +152,10 @@ class GraphicsManager {
 
   /**
    * function to handle drawing the ping text
+   * @param {object} props The properties of the application to be passed down
+   * @param {string} sprite_object The text object to be utilized
    */
-  handle_ping_text(text_object, props) {
+  handle_ping_text(props, text_object) {
     const { app, NetworkManager } = props;
     if(this.debug) {
       // set ping text

@@ -8,6 +8,7 @@ class Sprite {
    */
   constructor(props) {
     this.name = props.name;
+    this.background = props.background;
     this.x = props.x;
     this.y = props.y;
     this.width = props.width;

@@ -14,50 +14,52 @@ class SpriteManager {
 
   /**
    * function to draw new sprites or update existing ones
+   * @param {object} props The properties of the application to be passed down
    */
   draw_sprites(props) {
     // loop through sprites and add / update them accordingly
     for(let i = 0; i < this.sprites.length; i++) {
       if(!this.sprites[i].added) {
-        this.add_sprite(this.sprites[i], props);
+        this.add_sprite(props, this.sprites[i]);
         this.sprites[i].added = true;
       }
       else {
-        this.update_sprite(this.sprites[i], props);
+        this.update_sprite(props, this.sprites[i]);
       }
     }
   }
 
   /**
    * function to add a new sprite to PIXI canvas
+   * @param {object} props The properties of the application to be passed down
    */
-  add_sprite(sprite_to_add, props) {
+  add_sprite(props, sprite_to_add) {
     // get an instance of the app and loader
-    const { app, loader, game_area } = props;
-    // load the texture we need
-    loader.add(sprite_to_add.name, sprite_to_add.sprite_image).load((loader, resources) => {
-      const sprite = new PIXI.Sprite(resources[sprite_to_add.name].texture);
-      sprite.x = sprite_to_add.x + game_area.x;
-      sprite.y = sprite_to_add.y + game_area.y;
-      sprite.width = sprite_to_add.width * game_area.scale;
-      sprite.height = sprite_to_add.height * game_area.scale;
-      sprite_to_add.pixi_sprite_object = sprite;
-      app.stage.addChild(sprite);
-    });
+    const { app, resources, game_area } = props;
+    // create a new pixi sprite object and add it to the stage
+    const sprite =
+      new PIXI.Sprite(resources[sprite_to_add.sprite_image].texture);
+    sprite.x = sprite_to_add.x + (sprite.background ? 0 : game_area.x);
+    sprite.y = sprite_to_add.y + (sprite.background ? 0 : game_area.y);
+    sprite.width = sprite_to_add.width * game_area.scale * sprite_to_add.scale;
+    sprite.height = sprite_to_add.height * game_area.scale * sprite_to_add.scale;
+    sprite_to_add.pixi_sprite_object = sprite;
+    app.stage.addChild(sprite);
   }
 
   /**
    * function to update an existing sprite
+   * @param {object} props The properties of the application to be passed down
    */
-  update_sprite(sprite, props) {
+  update_sprite(props, sprite) {
     // get an instance of the app and loader
     const { game_area } = props;
     const pixi_sprite_object = sprite.pixi_sprite_object;
     if(!pixi_sprite_object) {
       return;
     }
-    pixi_sprite_object.x = sprite.x + game_area.x;
-    pixi_sprite_object.y = sprite.y + game_area.y;
+    pixi_sprite_object.x = sprite.x + (sprite.background ? 0 : game_area.x);
+    pixi_sprite_object.y = sprite.y + (sprite.background ? 0 : game_area.y);
     pixi_sprite_object.width = sprite.width * game_area.scale * sprite.scale;
     pixi_sprite_object.height = sprite.height * game_area.scale * sprite.scale;
   }
