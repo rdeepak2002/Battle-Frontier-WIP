@@ -48,6 +48,7 @@ class App extends Component {
    */
   componentDidMount() {
     // declare and initialize the PIXI canvas
+    PIXI.utils.skipHello();
     const app = new PIXI.Application();
     const loader = app.loader;
     app.first_click = false;
