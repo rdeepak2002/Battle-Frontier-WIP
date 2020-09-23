@@ -55,6 +55,7 @@ class SpriteManager {
     if(sprite_to_add.background) {
       const sprite = new PIXI.TilingSprite(resources[sprite_to_add.sprite_image].texture, app.renderer.width, app.renderer.height);
       sprite_to_add.pixi_sprite_object = sprite;
+      sprite.zIndex = -1;
       app.stage.addChild(sprite);
     }
     else {
