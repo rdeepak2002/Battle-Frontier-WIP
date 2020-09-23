@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js';
 
+import Sprite from './../sprites/Sprite';
+
 /**
  * Class for managing Sprite objects
  * @author Deepak Ramalingam
@@ -9,7 +11,20 @@ class SpriteManager {
    * Constructor to initialize variables
    */
   constructor() {
-    this.sprites = []
+    this.sprites = [
+      new Sprite({
+        "name": "sky_background",
+        "background": true,
+        "x": 0,
+        "y": 0,
+        "width": 391,
+        "height": 292,
+        "scale": 1.0,
+        "sprite_image": "sky_background",
+        "pixi_sprite_object": undefined,
+        "added": false
+      })
+    ]
   }
 
   /**
@@ -37,16 +52,20 @@ class SpriteManager {
     // get an instance of the app and loader
     const { app, resources, game_area } = props;
     // create a new pixi sprite object and add it to the stage
-    const sprite =
-      new PIXI.Sprite(resources[sprite_to_add.sprite_image].texture);
-    sprite.x = sprite_to_add.x + (sprite_to_add.background ? 0 : game_area.x);
-    sprite.y = sprite_to_add.y + (sprite_to_add.background ? 0 : game_area.y);
-    sprite.width = sprite_to_add.width * game_area.scale * sprite_to_add.scale;
-    sprite.height = sprite_to_add.height * game_area.scale * sprite_to_add.scale;
-    sprite_to_add.pixi_sprite_object = sprite;
-    app.stage.addChild(sprite);
-    // repeat background
-    
+    if(sprite_to_add.background) {
+      const sprite = new PIXI.TilingSprite(resources[sprite_to_add.sprite_image].texture, app.renderer.width, app.renderer.height);
+      sprite_to_add.pixi_sprite_object = sprite;
+      app.stage.addChild(sprite);
+    }
+    else {
+      let sprite = new PIXI.Sprite(resources[sprite_to_add.sprite_image].texture);
+      sprite.x = sprite_to_add.x + (sprite_to_add.background ? 0 : game_area.x);
+      sprite.y = sprite_to_add.y + (sprite_to_add.background ? 0 : game_area.y);
+      sprite.width = sprite_to_add.width * game_area.scale * sprite_to_add.scale;
+      sprite.height = sprite_to_add.height * game_area.scale * sprite_to_add.scale;
+      sprite_to_add.pixi_sprite_object = sprite;
+      app.stage.addChild(sprite);
+    }
   }
 
   /**
@@ -55,15 +74,21 @@ class SpriteManager {
    */
   update_sprite(props, sprite_to_update) {
     // get an instance of the app and loader
-    const { game_area } = props;
+    const { app, game_area } = props;
     const pixi_sprite_object = sprite_to_update.pixi_sprite_object;
     if(!pixi_sprite_object) {
       return;
     }
-    pixi_sprite_object.x = sprite_to_update.x + (sprite_to_update.background ? 0 : game_area.x);
-    pixi_sprite_object.y = sprite_to_update.y + (sprite_to_update.background ? 0 : game_area.y);
-    pixi_sprite_object.width = sprite_to_update.width * game_area.scale * sprite_to_update.scale;
-    pixi_sprite_object.height = sprite_to_update.height * game_area.scale * sprite_to_update.scale;
+    if(sprite_to_update.background) {
+      pixi_sprite_object.width = app.renderer.width;
+      pixi_sprite_object.height = app.renderer.height;
+    }
+    else {
+      pixi_sprite_object.x = sprite_to_update.x + (sprite_to_update.background ? 0 : game_area.x);
+      pixi_sprite_object.y = sprite_to_update.y + (sprite_to_update.background ? 0 : game_area.y);
+      pixi_sprite_object.width = sprite_to_update.width * game_area.scale * sprite_to_update.scale;
+      pixi_sprite_object.height = sprite_to_update.height * game_area.scale * sprite_to_update.scale;
+    }
   }
 }
 

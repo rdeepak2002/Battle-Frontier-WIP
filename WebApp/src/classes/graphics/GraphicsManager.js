@@ -17,14 +17,14 @@ class GraphicsManager {
       {"name": "start_text", "added": false, "text_object":
         new PIXI.Text(isMobile ? "Tap to Start" : "Click to Start",
         {fontFamily : "Arial", fontSize: 24,
-        fill : 0xFFFFFF, align : "center"})},
+        fill : 0x000000, align : "center"})},
       // fps text
       {"name": "fps_text", "added": false, "text_object":
-        new PIXI.Text("", {fontFamily : "Arial", fontSize: 24, fill : 0xFFFFFF,
+        new PIXI.Text("", {fontFamily : "Arial", fontSize: 24, fill : 0x000000,
         align : "center"})},
       // ping time text
       {"name": "ping_text", "added": false, "text_object":
-        new PIXI.Text("", {fontFamily : "Arial", fontSize: 24, fill : 0xFFFFFF,
+        new PIXI.Text("", {fontFamily : "Arial", fontSize: 24, fill : 0x000000,
         align : "center"})}
       ];
     this.sprite_objects = [

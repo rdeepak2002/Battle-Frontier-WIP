@@ -36,8 +36,8 @@ class App extends Component {
       loader: undefined,
       game_area: undefined,
       ScreenManager: undefined,
-      GraphicsManager: undefined,
       SpriteManager: undefined,
+      GraphicsManager: undefined,
       MusicManager: undefined,
       NetworkManager: undefined
     };
@@ -62,8 +62,8 @@ class App extends Component {
         app: app,
         resources: resources,
         ScreenManager: new ScreenManager(),
-        GraphicsManager: new GraphicsManager(),
         SpriteManager: new SpriteManager(),
+        GraphicsManager: new GraphicsManager(),
         MusicManager: new MusicManager(),
         NetworkManager: new NetworkManager()
       },
@@ -138,10 +138,10 @@ class App extends Component {
     // make the new game_area definition available to the whole class
     this.setState({game_area: game_area},
     () => {
-      // draw any PIXI specific graphics
-      GraphicsManager.draw_graphics(this.state);
       // update and add new sprites
       SpriteManager.draw_sprites(this.state);
+      // draw any PIXI specific graphics
+      GraphicsManager.draw_graphics(this.state);
     });
   }
 }

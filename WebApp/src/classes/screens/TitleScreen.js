@@ -14,18 +14,6 @@ class TitleScreen {
     // sprites to be drawn
     this.sprites = [
                       new Sprite({
-                        "name": "sky_background",
-                        "background": true,
-                        "x": 0,
-                        "y": 0,
-                        "width": 391,
-                        "height": 292,
-                        "scale": 1.0,
-                        "sprite_image": "sky_background",
-                        "pixi_sprite_object": undefined,
-                        "added": false
-                      }),
-                      new Sprite({
                         "name": "ninja",
                         "background": false,
                         "x": 0,
