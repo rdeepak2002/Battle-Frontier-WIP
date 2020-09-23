@@ -9,7 +9,8 @@ import GraphicsManager from './classes/graphics/GraphicsManager';
 import MusicManager from './classes/sounds/MusicManager';
 import NetworkManager from './classes/network/NetworkManager';
 
-import sky_background from './resources/sprites/backgrounds/sky_background.png';
+import sky_background_1 from './resources/sprites/backgrounds/sky_background_1.png';
+import sky_background_2 from './resources/sprites/backgrounds/sky_background_2.png';
 import ninja_image from './resources/sprites/ninja.png';
 
 /**
@@ -53,7 +54,8 @@ class App extends Component {
     const loader = app.loader;
     app.first_click = false;
     // add textures
-    loader.add('sky_background', sky_background)
+    loader.add('sky_background_1', sky_background_1)
+          .add('sky_background_2', sky_background_2)
           .add('ninja_image', ninja_image);
     // load the textures
     loader.load((loader, resources) => {

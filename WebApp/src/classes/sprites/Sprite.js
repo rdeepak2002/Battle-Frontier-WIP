@@ -9,6 +9,8 @@ class Sprite {
   constructor(props) {
     this.name = props.name;
     this.background = props.background;
+    this.repeat = props.repeat || false;
+    this.backgroundColor = props.backgroundColor || 0xFF00FF;
     this.x = props.x;
     this.y = props.y;
     this.width = props.width;
